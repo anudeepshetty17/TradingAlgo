@@ -11,10 +11,10 @@ public class PostgresqlExample {
         try (final Connection connection =
                     DriverManager.getConnection("jdbc:postgresql://pg-5851406-trading-algo.e.aivencloud.com:16435/cryptodb?ssl=require&user=avnadmin&password=AVNS_l9364VVgZPQExnp2bhV");
             final Statement statement = connection.createStatement();
-            final ResultSet resultSet = statement.executeQuery("select * from test_table")) {
+            final ResultSet resultSet = statement.executeQuery("select * from test_table order by close desc")) {
 
         while (resultSet.next()) {
-            System.out.println("Version: " + resultSet.getString("id"));
+            System.out.println("Version: " + resultSet.getString("close"));
         }
         } catch (SQLException e) {
             System.out.println("Connection failure.");
