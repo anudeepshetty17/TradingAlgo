@@ -1,6 +1,5 @@
 package com.trading;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.ApplicationArguments;
@@ -8,26 +7,20 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 /**
  * @author anude
  *
  */
 @SpringBootApplication
-public class OnlineShopApplication implements ApplicationRunner {
+public class TradingStarter implements ApplicationRunner {
 
 	
-	 private static final Logger logger = LogManager.getLogger(OnlineShopApplication.class);
+	 private static final Logger logger = LogManager.getLogger(TradingStarter.class);
 	 
 	public static void main(String[] args) {
-		SpringApplication.run(OnlineShopApplication.class, args);
+		SpringApplication.run(TradingStarter.class, args);
 	}
 	
 	@Override

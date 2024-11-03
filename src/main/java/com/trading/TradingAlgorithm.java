@@ -21,6 +21,8 @@ public class TradingAlgorithm {
 	public static void main(String[] args) {
 		System.out.println("Test:main");
 		
+		
+		
 
 		double entryValue = 0.0;
 		double entryAmount = 100;
