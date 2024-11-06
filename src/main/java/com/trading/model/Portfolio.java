@@ -60,10 +60,10 @@ public class Portfolio implements Serializable {
 	private BigDecimal entryValue;
 
 	@Column(name="creation_date")
-	private Timestamp startTime;
+	private Timestamp creationDate;
 
 	@Column(name="last_updated")
-	private Timestamp updationDate;
+	private Timestamp lastUpdated;
 
 	@Column(name="user_id")
 	private Integer userId;

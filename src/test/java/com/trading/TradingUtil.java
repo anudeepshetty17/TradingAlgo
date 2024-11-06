@@ -1,6 +1,7 @@
 package com.trading;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
@@ -17,7 +18,7 @@ public class TradingUtil {
 	public static BigDecimal getQuantityByPriceAndAmount(BigDecimal currPricePerUnit, BigDecimal amount,
 			boolean includeSpread) {
 
-		return amount.divide(currPricePerUnit);
+		return amount.divide(currPricePerUnit,9,RoundingMode.HALF_UP);
 	}
 
 	/**
