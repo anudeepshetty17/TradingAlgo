@@ -9,14 +9,22 @@ public class TradingUtil {
 	public TradingUtil() {
 	
 	}
-	
+	/**
+
+**/
 	public static double getQuantityByPriceAndAmount(double currPricePerUnit, double amount,boolean includeSpread) {
 			
 		return  amount/currPricePerUnit;
 	}
-	
-	public static BigDecimal calculatePercentage(double oldVal,double newVal) {
-		return new BigDecimal(((newVal - oldVal)/100)*100);
+	/**
+First determine the difference
+change = difference between two prices/values
+percentage=(change/orginal)X100
+**/
+	public static BigDecimal percentageOfChange(double old,double newv) {
+		double change = old > newv ? old - newv : newv -old;
+  double orginal = old > newv ? newv : old;
+  retuen (change / orginal)*100;
 	}
 	
 	public static boolean compareDate(Timestamp a,Timestamp b) {
