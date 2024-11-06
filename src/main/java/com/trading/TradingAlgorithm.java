@@ -3,6 +3,10 @@
  */
 package com.trading;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.trading.service.TradingService;
+
 /**
  * 
  */
@@ -14,6 +18,9 @@ public class TradingAlgorithm {
 	public TradingAlgorithm() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	@Autowired
+    private TradingService tradingService;
 
 	/**
 	 * @param args
@@ -22,11 +29,12 @@ public class TradingAlgorithm {
 		System.out.println("Test:main");
 		
 		
-		
 
 		double entryValue = 0.0;
 		double entryAmount = 100;
 		double currentValue = 10.23;
+		double totalReturn =0.0;
+		double totalPercent = 0.0;
 		double low=0.0;
 		double high =0.0;
 		int buyPercent =5;
@@ -43,7 +51,7 @@ public class TradingAlgorithm {
 				double buyAmount = entryValue - currentValue;
 				//trigger buy call here
 			}
-		}
+		}		
 	}
 	
 

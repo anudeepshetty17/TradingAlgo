@@ -10,6 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 /**
  * The persistent class for the test_table database table.
  * 
@@ -17,6 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="PRICE_HISTORY")
 @NamedQuery(name="PriceHistory.findAll", query="SELECT t FROM PriceHistory t")
+@Getter @Setter @ToString
 public class PriceHistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -10,13 +10,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 /**
  * The persistent class for the test_table database table.
  * 
  */
 @Entity
-@Table(name="test_table")
+@Table(name="portfolio")
 @NamedQuery(name="Portfolio.findAll", query="SELECT t FROM Portfolio t")
+@Getter @Setter @ToString @AllArgsConstructor
 public class Portfolio implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -43,6 +49,9 @@ public class Portfolio implements Serializable {
 
 	@Column(name="total_return")
 	private BigDecimal totalReturn;
+	
+	@Column(name="total_return_percent")
+	private BigDecimal totalReturnPercent;
 
 	@Column(name="entry_price")
 	private BigDecimal entryPrice;
@@ -57,7 +66,10 @@ public class Portfolio implements Serializable {
 	private Timestamp updationDate;
 
 	@Column(name="user_id")
-	private Timestamp userId;
+	private Integer userId;
+	
+	@Column(name="last_trade")
+	private String lastTrade;
 
 	public Portfolio() {
 	}

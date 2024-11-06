@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class PostgresqlExample {
+public class CryptoExample {
     public static void main(String[] args) throws ClassNotFoundException {
         try (final Connection connection =
                     DriverManager.getConnection("jdbc:postgresql://pg-5851406-trading-algo.e.aivencloud.com:16435/defaultdb?ssl=require&user=avnadmin&password=************************");
