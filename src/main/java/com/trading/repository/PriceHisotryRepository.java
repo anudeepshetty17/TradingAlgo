@@ -11,6 +11,8 @@ public interface PriceHisotryRepository extends JpaRepository<PriceHistory, Long
     List<PriceHistory> findByCoinName(String coinName);
 
 	List<PriceHistory> findByCoinNameOrderByStartTimeDesc(String string);
+
+	List<PriceHistory> findByCoinNameOrderByStartTimeAsc(String string);
 					
 	
 	

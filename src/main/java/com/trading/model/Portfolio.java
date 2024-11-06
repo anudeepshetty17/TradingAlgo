@@ -138,5 +138,10 @@ public class Portfolio implements Serializable {
 	 * 
 	 * public void setVolume(BigDecimal volume) { this.volume = volume; }
 	 */
+	@Override
+	public String toString() { 
+	    return "Equity: '" + this.equity + "', Quantity: '" + this.quantity + "', TotalReturn: '" + this.totalReturn + "'";
+	} 
+	
 
 }

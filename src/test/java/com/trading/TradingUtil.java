@@ -25,13 +25,18 @@ public class TradingUtil {
 	 * First determine the difference change = difference between two prices/values
 	 * percentage=(change/orginal)X100
 	 **/
-	public static BigDecimal calculatePercentage(double old, double newv) {
-		double change = old > newv ? old - newv : newv - old;
-		double orginal = old > newv ? newv : old;
-		return new BigDecimal((change / orginal) * 100);
+	public static BigDecimal calculatePercentage(BigDecimal newv, BigDecimal old) {		
+		BigDecimal d = new BigDecimal(0);
+		if(newv.compareTo(old) >0 )
+			d =((newv.subtract(old)).divide(newv,9,RoundingMode.HALF_UP));
+		else
+			d =(old.subtract(newv)).divide(old,9,RoundingMode.HALF_UP);
+		
+		d = d.multiply(new BigDecimal(100));
+		return d ;
 	}
 
-	public static boolean compareDate(Timestamp a, Timestamp b) {
+	public static int compareDate(Timestamp a, Timestamp b) {
 
 		// Create a Calendar object and set it to the timestamp
 		Calendar calendar = Calendar.getInstance();
@@ -60,10 +65,7 @@ public class TradingUtil {
 
 		int comparisonResult = zeroedTimestampA.compareTo(zeroedTimestampB);
 
-		if (comparisonResult == 0)
-			return true;
-
-		return false;
+		return comparisonResult;
 
 	}
 

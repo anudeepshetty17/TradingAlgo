@@ -1,6 +1,7 @@
 package com.trading;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
@@ -66,29 +67,20 @@ public class TradingServiceTest {
     @Transactional
     @Commit
 	void testMyServiceReport_Success() {	
-		List<PriceHistory> history1 = this.priceHistoryRepository.findByCoinNameOrderByStartTimeDesc("BTC");
+		List<PriceHistory> history = this.priceHistoryRepository.findByCoinNameOrderByStartTimeAsc("BTC");
 		
 		Portfolio portfolio = this.portfolioRepository.findByAssetName("BTC");
-		String str = "2021-11-05 21:05:00";
-		Timestamp timestamp = Timestamp.valueOf(str);
+		String entryDate = "2022-11-05 21:05:00"; // Start Date when you want to make an entry
+		Timestamp entryDateTime = Timestamp.valueOf(entryDate);
 
 		if(portfolio == null) {
-			commenceTrade(timestamp, 10000, "BTC");
+			portfolio = commenceTrade(entryDateTime, 10000, "BTC");
 		}	
-	}
-	
-	public Portfolio generatePortfolio(String coinName,Integer userId)
-	{
-		Portfolio  porfolio= new Portfolio();
-		porfolio.setId(1);
-		porfolio.setAssetClass("CRYPYO");
-		porfolio.setAssetName("BTC");
-		porfolio.setQuantity(null);
-		return null;
 		
+		portfolio = computeProfitLoss(history,portfolio,entryDateTime);
 	}
 	
-	public Portfolio computeProfitLoss(List<PriceHistory> priceHistory) {
+	public Portfolio computeProfitLoss(List<PriceHistory> priceHistory,Portfolio portfolio,Timestamp entryDateTime) {
 		double entryValue = 0.0;
 		double entryAmount = 100;
 		double currentValue = 10.23;
@@ -98,21 +90,45 @@ public class TradingServiceTest {
 		double high =0.0;
 		BigDecimal  sellPercent = new BigDecimal(10);
 		BigDecimal  buyPercent = new BigDecimal(5);
-		
+		BigDecimal currentValueBasedOnQuantity;
+		BigDecimal quntityTosellBuy;
+		BigDecimal buyingPower =new BigDecimal(0); ;
+		Calendar calendar = Calendar.getInstance();
+		System.out.println(portfolio);
+		Portfolio port = new Portfolio();
 		for(PriceHistory hist:priceHistory) {
-						
-			if (currentValue > entryAmount) {
-				if (TradingUtil.calculatePercentage(currentValue, entryValue).compareTo(sellPercent) > 0) {
-					double sellAmount = currentValue - entryValue;
-					//trigger sell call here
-				}
-			} else {
-				if (buyPercent.compareTo(TradingUtil.calculatePercentage(entryValue, currentValue)) > 0) {
-					double buyAmount = entryValue - currentValue;
-					//trigger buy call here
-				}
-			}	
 			
+			if(TradingUtil.compareDate(hist.getStartTime(),entryDateTime) >0) {		
+				currentValueBasedOnQuantity = portfolio.getQuantity().multiply(hist.getClose());
+
+				if (currentValueBasedOnQuantity.compareTo(portfolio.getEquity())>0) {  //Sell
+					if(TradingUtil.calculatePercentage(hist.getClose(), portfolio.getAvgCost()).compareTo(sellPercent) >0) {
+						//Fix this When we buy something we need to update the quantity, equity etc back 
+						buyingPower = buyingPower.add(currentValueBasedOnQuantity.subtract(portfolio.getEquity()));
+						port = new Portfolio();
+						quntityTosellBuy =  (currentValueBasedOnQuantity.subtract(portfolio.getEquity())).divide(hist.getClose(),9,RoundingMode.HALF_UP);
+						port.setEquity(currentValueBasedOnQuantity.subtract(portfolio.getEquity()));
+						port.setQuantity(portfolio.getQuantity().subtract(quntityTosellBuy));
+						port.setLastUpdated(new Timestamp(calendar.getTimeInMillis()));
+						port.setTotalReturn(buyingPower);
+						port.setLastTrade("BUY");
+
+						//portfolioRepository.save(portfolio);
+						
+						System.out.println(hist.getClose()+"--"+quntityTosellBuy+"::"+buyingPower+"--"+port);
+
+					}
+				
+				} if (hist.getClose().compareTo(portfolio.getAvgCost())<0) {
+					 //Trigger buy
+					if(TradingUtil.calculatePercentage(portfolio.getAvgCost(), hist.getClose()).compareTo(buyPercent)>0) {
+						//System.out.println("buy");
+						//TODO
+
+					}
+				}	
+				
+			}			
 			
 		}
 		
@@ -128,12 +144,12 @@ public class TradingServiceTest {
 		}
 	}
 	
-	public void commenceTrade(Timestamp startDate,double entryAmount,String assetName) {
+	public Portfolio commenceTrade(Timestamp startDate,double entryAmount,String assetName) {
 		List<PriceHistory> priceHistory = this.priceHistoryRepository.findByCoinNameOrderByStartTimeDesc(assetName);
 		Calendar calendar = Calendar.getInstance();
 		Portfolio  portfolio= new Portfolio(); // Create first Trade Based on Entry Value
 		for(PriceHistory hist:priceHistory) {
-			if(TradingUtil.compareDate(startDate, hist.getStartTime())) {
+			if(TradingUtil.compareDate(startDate, hist.getStartTime())==0) {
 				
 				portfolio.setId(1);
 				portfolio.setAssetId(1);
@@ -156,10 +172,6 @@ public class TradingServiceTest {
 		}
 		
 		portfolioRepository.save(portfolio);
-		/*
-		 * Portfolio saved = doInTransaction(() -> portfolioRepository.save(portfolio));
-		 * 
-		 * doInTransaction(() -> portfolioRepository.delete(portfolio));
-		 */
+		return portfolio;
 	}
 }
