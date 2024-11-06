@@ -47,7 +47,7 @@ public class TradingAlgorithm {
 	}
 	
 
-	public static double percentage(double oldValue, double newValue) {
+	public static double percentageOfChange(double oldValue, double newValue) {
 		return ((newValue - oldValue)/100)*100;
 	}
 
