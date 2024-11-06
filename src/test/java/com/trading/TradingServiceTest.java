@@ -46,8 +46,6 @@ public class TradingServiceTest {
     private PortfolioRepository portfolioRepository;
     
     
-    @Autowired
-    private TestEntityManager entityManager;
 
 	
 	@Test
@@ -108,7 +106,7 @@ public class TradingServiceTest {
 	public void triggerSale(double amount, double currentPrice,char trade) {
 		double quantity;
 		if(trade == 'B') { //Buy 
-			TradingUtil.getQuantityByPriceAndAmount(currentPrice, amount, false);
+			//TradingUtil.getQuantityByPriceAndAmount(currentPrice, amount, false);
 		}else {  //Sale
 			
 		}
@@ -116,10 +114,16 @@ public class TradingServiceTest {
 	
 	public void commenceTrade(Timestamp startDate,double entryAmount,String assetName) {
 		List<PriceHistory> priceHistory = this.priceHistoryRepository.findByCoinNameOrderByStartTimeDesc(assetName);
-
+		
 		for(PriceHistory hist:priceHistory) {
-			if(TradingUtil.compareDate(startDate, hist.getStartTime()))
-				System.out.println(hist);
+			if(TradingUtil.compareDate(startDate, hist.getStartTime())) {
+				Portfolio  porfolio= new Portfolio();
+				porfolio.setId(1);
+				porfolio.setAssetClass("CRYPYO");
+				porfolio.setAssetName(assetName);
+				porfolio.setQuantity(TradingUtil.getQuantityByPriceAndAmount(hist.getLow(), new BigDecimal(entryAmount), false));
+			}
+			
 			
 		}
 	}

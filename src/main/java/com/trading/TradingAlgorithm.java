@@ -41,17 +41,12 @@ public class TradingAlgorithm {
 		int sellPercent = 10;
 		
 
-		if (currentValue > entryAmount) {
-			if (percentage(currentValue, entryValue) > sellPercent) {
-				double sellAmount = currentValue - entryValue;
-				//trigger sell call here
-			}
-		} else {
-			if (percentage(entryValue, currentValue) > buyPercent) {
-				double buyAmount = entryValue - currentValue;
-				//trigger buy call here
-			}
-		}		
+		/*
+		 * if (currentValue > entryAmount) { if (percentage(currentValue, entryValue) >
+		 * sellPercent) { double sellAmount = currentValue - entryValue; //trigger sell
+		 * call here } } else { if (percentage(entryValue, currentValue) > buyPercent) {
+		 * double buyAmount = entryValue - currentValue; //trigger buy call here } }
+		 */	
 	}
 	
 
